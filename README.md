@@ -1,6 +1,6 @@
 # NGrammer
 
-Calculates and counts ngrams from a json documnet
+Calculates and counts ngrams from a json document
 
 ## to install
 
