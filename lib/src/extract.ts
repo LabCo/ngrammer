@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as termVector from "term-vector"
 import * as natural from "natural"
 import * as nlp from 'wink-nlp-utils'
-import {NGramer, CountedPhrase} from "./ngramer"
+import {NGrammer, CountedPhrase} from "./ngrammer"
 
 interface ParsedReview {
   id?: string,
@@ -43,9 +43,7 @@ const topNStr = nconf.get("topN")
 const topN = parseInt(topNStr)
 const omitStopWords = nconf.get("stop") != null
 
-
-console.log("file:", filePath)
-NGramer.process(filePath, topN, omitStopWords).then( countedGrams => {
+NGrammer.process(filePath, topN, omitStopWords).then( countedGrams => {
 
   Object.keys(countedGrams).forEach( key => {
     const countedPhrases = countedGrams[key]

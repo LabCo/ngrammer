@@ -2,8 +2,8 @@
   "name": "lab-ngrammer",
   "version": "1.0.0",
   "description": "Calculates ngrams from a json documnet",
-  "main": "dist/src/ngramer.js",
-  "types": "dist/src/ngramer.d.ts",
+  "main": "dist/src/ngrammer.js",
+  "types": "dist/src/ngrammer.d.ts",
   "scripts": {
     "extract": "node dist/src/extract.js",
     "build": "tsc",

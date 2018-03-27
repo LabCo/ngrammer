@@ -1,25 +1,29 @@
-# NGramer
+# NGrammer
 
 Calculates and counts ngrams from a json documnet
 
 ## to install
 
-`npm install --save lab-ngramer`
+`npm install --save lab-ngrammer`
 
 ## to use in a ts projext
 
 ```
-import {NGramer, CountedPhrase} from "lab-ngramer"
+import {NGrammer, CountedPhrase} from "lab-ngrammer"
 const filePath = "some/file/path.json"
 const omitStopWords = false
-NGramer.process(filePath, 30, omitStopWords).then( countedGrams => {
+NGrammer.process(filePath, 30, omitStopWords).then( countedGrams => {
   ...
 })
 ```
 
 ## to use in command line
 
-`npm run extract -- -f FILE_PATH [-s]`
+
+```
+npm install -g lab-ngrammer
+npm run extract -- -f FILE_PATH [-s]
+```
 
 ```
   -f   the file path where to read the json file from
