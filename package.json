@@ -1,10 +1,11 @@
 {
-  "name": "ts-module-starter",
+  "name": "lab-ngrammer",
   "version": "1.0.0",
-  "description": "Template for creating typescript modules",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "Calculates ngrams from a json documnet",
+  "main": "dist/src/ngramer.js",
+  "types": "dist/src/ngramer.d.ts",
   "scripts": {
+    "extract": "node dist/src/extract.js",
     "build": "tsc",
     "test": "jest"
   },
@@ -24,11 +25,24 @@
         "tsConfigFile": "tsconfig.json"
       }
     },
-    "moduleFileExtensions": [ "ts", "js"],
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
     "transform": {
       "^.+\\.(ts)$": "./node_modules/ts-jest/preprocessor.js"
     },
-    "testMatch": [ "**/tests/**/*.test.(ts|js)" ],
+    "testMatch": [
+      "**/tests/**/*.test.(ts|js)"
+    ],
     "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@types/natural": "^0.2.33",
+    "@types/nconf": "0.0.37",
+    "natural": "^0.5.6",
+    "nconf": "^0.10.0",
+    "term-vector": "^0.1.2",
+    "wink-nlp-utils": "^1.7.1"
   }
 }

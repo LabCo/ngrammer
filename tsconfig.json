@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
+    "noImplicitAny": true,
+    "sourceMap": true,
     "target": "es6",
     "module": "commonjs",
     "declaration": true,
+    "rootDir": "./lib",
     "outDir": "./dist",
     "strict": true,
-    "baseUrl": "."  
+    "baseUrl": "./lib/src"  
   },
-  "exclude": [ "node_modules" ]
+  "exclude": [ "node_modules", "dist" ]
 }

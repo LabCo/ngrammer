@@ -1,4 +1,3 @@
-import {test} from "../lib"
 import {} from "jest"
 
 describe("sample test", () => {
