@@ -22,12 +22,13 @@ NGrammer.process(filePath, 30, omitStopWords).then( countedGrams => {
 
 ```
 npm install -g lab-ngrammer
-lab-ngrammer -f FILE_PATH [-s]
+lab-ngrammer -f FILE_PATH [-s NUMBER_PHRASES] [-s]
 ```
 
 ```
   -f   the file path where to read the json file from
-  -s   flag to tell ngrammer to remove stop words
+  -n   limits for max number of for each phrase word size group 
+  -s   flag to tell ngrammer to remove stop words
 ```
 
 ## expects file json format 
