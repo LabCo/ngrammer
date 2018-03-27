@@ -1,6 +1,6 @@
 {
   "name": "lab-ngrammer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Calculates ngrams from a json documnet",
   "main": "dist/src/ngrammer.js",
   "types": "dist/src/ngrammer.d.ts",
@@ -8,6 +8,9 @@
     "extract": "node dist/src/extract.js",
     "build": "tsc",
     "test": "jest"
+  },
+  "bin": {
+    "lab-ngrammer": "bin/extract.js"
   },
   "keywords": [],
   "author": "LabLabLab",

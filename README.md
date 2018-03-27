@@ -22,7 +22,7 @@ NGrammer.process(filePath, 30, omitStopWords).then( countedGrams => {
 
 ```
 npm install -g lab-ngrammer
-npm run extract -- -f FILE_PATH [-s]
+lab-ngrammer -f FILE_PATH [-s]
 ```
 
 ```

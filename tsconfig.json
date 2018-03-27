@@ -8,7 +8,7 @@
     "rootDir": "./lib",
     "outDir": "./dist",
     "strict": true,
-    "baseUrl": "./lib/src"  
+    "baseUrl": "./lib/src"
   },
   "exclude": [ "node_modules", "dist" ]
 }
