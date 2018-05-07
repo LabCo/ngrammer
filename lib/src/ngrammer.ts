@@ -29,33 +29,8 @@ export interface CountedPhrase {
 
 export class NGrammer {
 
-  static async process(filePath:string, topN:number, omitStopWords:boolean): Promise<{[key:string]: CountedPhrase[]}> {
-    var fs = require('fs');
-    var obj: ParseRes;
-
-    const readP = new Promise<ParseRes>( (resolve, reject) => {
-      fs.readFile(filePath, 'utf8', function (err: any, data: any) {
-        if (err) { reject(err); }
-        else {
-          obj = JSON.parse(data);
-          resolve(obj)
-        }
-      });
-    })
-    const data = await readP
-    if(data.reviews == null) {
-      throw new Error("no reviews")
-    }
-
-    const reviews = data.reviews
-    const allTexts = reviews.reduce( (texts, review) => {
-      if(review.text) {
-        texts.push(review.text); 
-      }
-      return texts;
-    }, <string[]>[] )
-
-    const giantString = allTexts.join(" ").toLowerCase()
+  static processText(text:string[], topN:number, omitStopWords:boolean): {[key:string]: CountedPhrase[]} {
+    const giantString = text.join(" ").toLowerCase()
     const onlyAlphaNums = nlp.string.retainAlphaNums(giantString)
     const tokenizer = new natural.WordTokenizer();
     const tokens = tokenizer.tokenize(giantString)
@@ -107,6 +82,35 @@ export class NGrammer {
     })
     
     return countedNGrams
+  }
+
+  static async process(filePath:string, topN:number, omitStopWords:boolean): Promise<{[key:string]: CountedPhrase[]}> {
+    var fs = require('fs');
+    var obj: ParseRes;
+
+    const readP = new Promise<ParseRes>( (resolve, reject) => {
+      fs.readFile(filePath, 'utf8', function (err: any, data: any) {
+        if (err) { reject(err); }
+        else {
+          obj = JSON.parse(data);
+          resolve(obj)
+        }
+      });
+    })
+    const data = await readP
+    if(data.reviews == null) {
+      throw new Error("no reviews")
+    }
+
+    const reviews = data.reviews
+    const allTexts = reviews.reduce( (texts, review) => {
+      if(review.text) {
+        texts.push(review.text); 
+      }
+      return texts;
+    }, <string[]>[] )
+
+    return this.processText(allTexts, topN, omitStopWords)
   }
 
 }
