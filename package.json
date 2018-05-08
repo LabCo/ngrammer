@@ -1,6 +1,6 @@
 {
   "name": "lab-ngrammer",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Calculates ngrams from a json documnet",
   "main": "dist/src/ngrammer.js",
   "types": "dist/src/ngrammer.d.ts",

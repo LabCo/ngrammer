@@ -40,9 +40,16 @@ export class NGrammer {
     
     // return grams
 
-    const onlyAlphaNums = nlp.string.retainAlphaNums(giantString)
+    const noSpecialChars = nlp.string.removeSplChars(giantString)
+    const noPunctuation = nlp.string.removePunctuations(noSpecialChars)
+    const noExtraSpace = nlp.string.removeExtraSpaces(noPunctuation)
+
+    const cleanedStr = noExtraSpace
+
+    console.log("STR:", cleanedStr)
+
     const tokenizer = new natural.WordTokenizer();
-    const tokens = tokenizer.tokenize(giantString)
+    const tokens = nlp.string.tokenize(cleanedStr) //tokenizer.tokenize(cleanedStr)
 
     let finalTokens = null
     if(omitStopWords) {
