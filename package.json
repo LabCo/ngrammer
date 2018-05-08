@@ -1,6 +1,6 @@
 {
   "name": "lab-ngrammer",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Calculates ngrams from a json documnet",
   "main": "dist/src/ngrammer.js",
   "types": "dist/src/ngrammer.d.ts",
@@ -36,13 +36,14 @@
       "^.+\\.(ts)$": "./node_modules/ts-jest/preprocessor.js"
     },
     "testMatch": [
-      "**/tests/**/*.test.(ts|js)"
+      "**/tests/**/*.test.ts"
     ],
     "testEnvironment": "node"
   },
   "dependencies": {
     "@types/natural": "^0.2.33",
     "@types/nconf": "0.0.37",
+    "compromise": "^11.7.0",
     "natural": "^0.5.6",
     "nconf": "^0.10.0",
     "term-vector": "^0.1.2",

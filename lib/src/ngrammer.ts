@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as termVector from "term-vector"
 import * as natural from "natural"
 import * as nlp from 'wink-nlp-utils'
-
+import * as compromise from "compromise"
 
 export interface ParsedReview {
   id?: string,
@@ -29,7 +29,45 @@ export interface CountedPhrase {
 
 export class NGrammer {
 
-  static processText(text:string[], topN:number, omitStopWords:boolean): {[key:string]: CountedPhrase[]} {
+  static processText(text:string[], topN:number, omitStopWords:boolean): CountedPhrase[] {
+    // const normalized = text.map(t => compromise(t, null).normalize().out())
+    // console.log("NOMRLIZED:\n", normalized)
+
+    const giantString = text.join("\n\n\n\n").toLowerCase()
+    // console.log("TEXT:\n", giantString)
+    // const grams = compromise(giantString, null).ngrams({max:5}).data().filter((d:any) => d.size > 1)
+    
+    // return grams
+
+    const onlyAlphaNums = nlp.string.retainAlphaNums(giantString)
+    const tokenizer = new natural.WordTokenizer();
+    const tokens = tokenizer.tokenize(giantString)
+
+    let finalTokens = null
+    if(omitStopWords) {
+      finalTokens = nlp.tokens.removeWords(tokens)
+    } else {
+      finalTokens = tokens
+    }  
+
+    const vec: any[] = termVector.getVector(finalTokens, {gte: 1, lte: 7})
+
+    const occuredMoreThanOnce = vec.filter( v => v[1] > 1)
+    const countedGrams = occuredMoreThanOnce.map(v => {
+      const gram: string[] = v[0]
+      const count = v[1]
+      const phrase = gram.join(" ")
+
+      return { count, phrase }
+    })
+    
+    return countedGrams.sort( (a, b) => {
+      return a.count - b.count
+    } )
+  }
+
+
+  static processTextAndGroup(text:string[], topN:number, omitStopWords:boolean): {[key:string]: CountedPhrase[]} {
     const giantString = text.join(" ").toLowerCase()
     const onlyAlphaNums = nlp.string.retainAlphaNums(giantString)
     const tokenizer = new natural.WordTokenizer();
@@ -110,7 +148,7 @@ export class NGrammer {
       return texts;
     }, <string[]>[] )
 
-    return this.processText(allTexts, topN, omitStopWords)
+    return this.processTextAndGroup(allTexts, topN, omitStopWords)
   }
 
 }
