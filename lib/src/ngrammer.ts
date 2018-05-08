@@ -46,8 +46,6 @@ export class NGrammer {
 
     const cleanedStr = noExtraSpace
 
-    console.log("STR:", cleanedStr)
-
     const tokenizer = new natural.WordTokenizer();
     const tokens = nlp.string.tokenize(cleanedStr) //tokenizer.tokenize(cleanedStr)
 
