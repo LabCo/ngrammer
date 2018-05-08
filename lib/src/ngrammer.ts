@@ -24,6 +24,7 @@ export interface ParseRes {
 export interface CountedPhrase {
   phrase: string;
   count: number;
+  length: number;
 }
 
 
@@ -56,9 +57,10 @@ export class NGrammer {
     const countedGrams = occuredMoreThanOnce.map(v => {
       const gram: string[] = v[0]
       const count = v[1]
+      const length = gram.length
       const phrase = gram.join(" ")
 
-      return { count, phrase }
+      return { count, phrase, length }
     })
     
     return countedGrams.sort( (a, b) => {
@@ -110,9 +112,10 @@ export class NGrammer {
         const countedPhrases = sorted.map( tup => {
           const count = tup[1]
           const gram = <string[]>tup[0]
+          const length = gram.length
           const phrase = gram.join(" ")
 
-          return { count, phrase }
+          return { count, phrase, length }
         })
 
         countedNGrams[key] = countedPhrases;
