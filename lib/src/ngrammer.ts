@@ -53,7 +53,20 @@ export class NGrammer {
 
     const vec: any[] = termVector.getVector(finalTokens, {gte: 1, lte: 7})
 
-    const occuredMoreThanOnce = vec.filter( v => v[1] > 1)
+    // filter out anything that occured only once
+    // also filter out any single word occurance that is a stop word
+    const occuredMoreThanOnce = vec.filter( v => {
+      const gram: string[] = v[0]
+      const count = v[1]
+
+      let isStop = false;
+      if(gram.length == 1) {
+        const noStop = <string[]>(nlp.tokens.removeWords(gram))
+        isStop = noStop.length <= 0
+      }
+
+      return count > 1 && !isStop
+    })
     const countedGrams = occuredMoreThanOnce.map(v => {
       const gram: string[] = v[0]
       const count = v[1]
