@@ -1,7 +1,6 @@
 import * as nconf from 'nconf'
 import * as fs from "fs"
 import * as termVector from "term-vector"
-import * as natural from "natural"
 import * as nlp from 'wink-nlp-utils'
 import * as compromise from "compromise"
 
@@ -30,7 +29,7 @@ export interface CountedPhrase {
 
 export class NGrammer {
 
-  static processText(text:string[], topN:number, omitStopWords:boolean): CountedPhrase[] {
+  static processText(text:string[], topN:number, omitStopWords:boolean, minCount?: number): CountedPhrase[] {
     // const normalized = text.map(t => compromise(t, null).normalize().out())
     // console.log("NOMRLIZED:\n", normalized)
 
@@ -45,9 +44,7 @@ export class NGrammer {
     const noExtraSpace = nlp.string.removeExtraSpaces(noPunctuation)
 
     const cleanedStr = noExtraSpace
-
-    const tokenizer = new natural.WordTokenizer();
-    const tokens = nlp.string.tokenize(cleanedStr) //tokenizer.tokenize(cleanedStr)
+    const tokens = nlp.string.tokenize(cleanedStr)
 
     let finalTokens = null
     if(omitStopWords) {
@@ -56,10 +53,11 @@ export class NGrammer {
       finalTokens = tokens
     }  
 
-    const vec: any[] = termVector.getVector(finalTokens, {gte: 1, lte: 7})
+    const vec: any[] = termVector.getVector(finalTokens, {gte: 1, lte: topN})
 
     // filter out anything that occured only once
     // also filter out any single word occurance that is a stop word
+    const minCountDefined = minCount || 2;
     const occuredMoreThanOnce = vec.filter( v => {
       const gram: string[] = v[0]
       const count = v[1]
@@ -70,7 +68,7 @@ export class NGrammer {
         isStop = noStop.length <= 0
       }
 
-      return count > 1 && !isStop
+      return count >= minCountDefined && !isStop
     })
     const countedGrams = occuredMoreThanOnce.map(v => {
       const gram: string[] = v[0]
@@ -87,11 +85,10 @@ export class NGrammer {
   }
 
 
-  static processTextAndGroup(text:string[], topN:number, omitStopWords:boolean): {[key:string]: CountedPhrase[]} {
+  static processTextAndGroup(text:string[], topN:number, omitStopWords:boolean, minCount?: number): {[key:string]: CountedPhrase[]} {
     const giantString = text.join(" ").toLowerCase()
     const onlyAlphaNums = nlp.string.retainAlphaNums(giantString)
-    const tokenizer = new natural.WordTokenizer();
-    const tokens = tokenizer.tokenize(giantString)
+    const tokens = nlp.string.tokenize(giantString)
 
     let finalTokens = null
     if(omitStopWords) {
@@ -100,10 +97,11 @@ export class NGrammer {
       finalTokens = tokens
     }  
 
-    const vec: any[] = termVector.getVector(finalTokens, {gte: 1, lte: 7})
+    const vec: any[] = termVector.getVector(finalTokens, {gte: 1, lte: topN})
 
-    const occuredMoreThanOnce = vec.filter( v => v[1] > 1)
-    const grouped = occuredMoreThanOnce.reduce( (grouped, current) => {
+    const minCountDefined = minCount || 2;
+    const occuredAtLeastMinCount = vec.filter( v => v[1] >= minCountDefined)
+    const grouped = occuredAtLeastMinCount.reduce( (grouped, current) => {
       const grams: string[] = current[0]
       const gramsLen = grams.length
       const count = current[1]
